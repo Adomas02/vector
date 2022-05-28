@@ -10,14 +10,26 @@ private:
     size_t capacity=0; // available memory
 
 public:
-    vector()
+    vector() //constructor
     {
-        // allocate
         ReAlloc(2);
     }
 
-   // ~vector();
-    void PushBack(const T& value)
+    ~vector(){delete[] Data;}//destructor
+
+    vector &operator=(const vector &a){ //operator=
+        if (this==&a)
+        {
+            return *this;
+        }
+        Data=a.Data;
+        size=a.size;
+        capacity=a.capacity;
+
+        return *this;
+    }
+
+    void PushBack(const T& value) // add new element to back
     {
         if(size>=capacity)
         {
@@ -28,20 +40,45 @@ public:
         size++;
     }
 
-    const T& operator[](size_t index)const
+    const T& operator[](size_t index)const //access at index
     {
         return Data[index];
     }
 
-    T& operator[](size_t index)
+    T& operator[](size_t index) //access at index and edit
     {
         return Data[index];
     }
 
-    size_t Size() const {return size;}
+    size_t Size() const {return size;} //size of container
+
+    void assign( size_t count, const T& value ){
+        ReAlloc(count);
+        for(int i=0;i<=count;i++)
+        {
+            Data[size]=value;
+            size++;
+           
+        }
+    }
+
+    T& front() //access first element
+    {
+        return Data[0];
+    }
+
+    T& back() //access last element
+    {
+        return Data[size-1];
+    }
+
+    const T* data() const
+    {
+        return Data;
+    }
 
 private:
-    void ReAlloc(size_t newCapacity)
+    void ReAlloc(size_t newCapacity) //increase capacity of container
     {
 
         T* newBlock = new T[newCapacity];
