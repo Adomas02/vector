@@ -1,5 +1,65 @@
 #pragma once
 
+    template<typename vector>
+class VectorIterator
+{
+public:
+    using ValueType = typename vector::ValueType;
+    using PointerType = ValueType*;
+    using ReferenceType = ValueType&;
+
+    VectorIterator(PointerType ptr)
+       : m_Ptr(ptr){}
+    VectorIterator& operator++()
+    {
+        m_Ptr++;
+        return *this;
+    }
+
+    VectorIterator operator++(int)
+    {
+        VectorIterator iterator = *this;
+        ++(*this);
+        return iterator;
+    }
+        VectorIterator& operator--()
+    {
+        m_Ptr--;
+        return *this;
+    }
+
+    VectorIterator operator--(int)
+    {
+        VectorIterator iterator = *this;
+        --(*this);
+        return iterator;
+    }
+
+    ReferenceType operator[](int index)
+    {
+        return *(m_Ptr+index);
+    }
+    PointerType operator->()
+    {
+        return m_Ptr;
+    }
+    ReferenceType operator*()
+    {
+        return *m_Ptr;
+    }
+    bool operator==(const VectorIterator& other) const
+    {
+        return m_Ptr== other.m_Ptr;
+    }
+    bool operator!=(const VectorIterator& other) const
+    {
+        return !(*this==other);
+    }
+private:
+    PointerType m_Ptr;
+};
+
+
     template<typename T>
 class vector
 {
@@ -10,6 +70,8 @@ private:
     size_t capacity=0; // available memory
 
 public:
+    using ValueType = T;
+    using Iterator= VectorIterator<vector<T>>;
     vector() //constructor
     {
         ReAlloc(2);
@@ -95,6 +157,34 @@ public:
         return true;
         else
         return false;
+    }
+
+    void PopBack()
+    {
+        if(size>0)
+        {
+            size--;
+            Data[size].~T();
+        }
+
+    }
+
+    void Clear()
+    {
+        for(size_t i=0;i<size;i++)
+        {
+            Data[i].~T();
+        }
+        size=0;
+    }
+
+    Iterator begin()
+    {
+        return Iterator(Data);
+    }
+    Iterator end()
+    {
+        return Iterator(Data+size);
     }
 
 
