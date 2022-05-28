@@ -52,6 +52,8 @@ public:
 
     size_t Size() const {return size;} //size of container
 
+    size_t Capacity() const {return capacity;} //size of capacity
+
     void assign( size_t count, const T& value ){
         ReAlloc(count);
         for(int i=0;i<=count;i++)
@@ -72,10 +74,29 @@ public:
         return Data[size-1];
     }
 
-    const T* data() const
+    const T* data() const //pointer to container
     {
         return Data;
     }
+
+    void shrink_to_fit() //set capacity=size
+    {
+        capacity=size;
+    }
+
+    void reserve( size_t new_cap )// increase the capacity of the vector
+    {
+        capacity=new_cap;
+    }
+
+    bool empty() const //check if container is empty
+    {
+        if(size==0)
+        return true;
+        else
+        return false;
+    }
+
 
 private:
     void ReAlloc(size_t newCapacity) //increase capacity of container
