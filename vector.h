@@ -149,6 +149,9 @@ public:
     void reserve( size_t new_cap )// increase the capacity of the vector
     {
         capacity=new_cap;
+        T* newArr = new T;
+        newArr=Data;
+        Data=newArr;
     }
 
     bool empty() const //check if container is empty

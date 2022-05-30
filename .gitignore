@@ -2,3 +2,5 @@
 testVector.exe
 testVector.cpp
 .vscode/settings.json
+stdVectorTest.cpp
+stdVectorTest.exe
